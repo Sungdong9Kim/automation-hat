@@ -157,7 +157,9 @@ class Pin(object):
 
     def read(self):
         self.setup()
-        return GPIO.input(self.pin)
+        #Added for ARTIK eagleye-----------------------------------------
+        #----------------------------------------------------------------
+        #return GPIO.input(self.pin)
 
     def setup(self):
         pass
@@ -194,7 +196,12 @@ class Input(Pin):
             return False
 
         setup()
-        GPIO.setup(self.pin, GPIO.IN)
+        #Added for ARTIK eagleye-----------------------------------------
+        pinctl.write( str(self.pin))
+        filename = '/sys/class/gpio/gpio%d/direction' % self.pin
+        pinctldir = open(filename, "wb", 0)
+        #----------------------------------------------------------------
+        #GPIO.setup(self.pin, GPIO.IN)
         self._is_setup = True
 
     def auto_light(self, value=None):
@@ -222,7 +229,9 @@ class Output(Pin):
             return False
 
         setup()
-        GPIO.setup(self.pin, GPIO.OUT, initial=0)
+        #Added for ARTIK eagleye-----------------------------------------
+        #----------------------------------------------------------------
+        #GPIO.setup(self.pin, GPIO.OUT, initial=0)
         self._is_setup = True
         return True
 
@@ -237,7 +246,9 @@ class Output(Pin):
         :param value: Value to write, either 1 for HIGH or 0 for LOW
         """
         self.setup()
-        GPIO.output(self.pin, value)
+        #Added for ARTIK eagleye-----------------------------------------
+        #----------------------------------------------------------------
+        #GPIO.output(self.pin, value)
         if self._en_auto_lights:
             self.light.write(1 if value else 0)
 
@@ -276,8 +287,9 @@ class Relay(Output):
 
         if is_automation_phat() and self.name == "one":
             self.pin = RELAY_3
-
-        GPIO.setup(self.pin, GPIO.OUT, initial=0)
+        #Added for ARTIK eagleye-----------------------------------------
+        #----------------------------------------------------------------
+        #GPIO.setup(self.pin, GPIO.OUT, initial=0)
         self._is_setup = True
         return True
 
@@ -290,8 +302,10 @@ class Relay(Output):
 
         if is_automation_phat() and self.name in ["two", "three"]:
             warnings.warn("Relay '{}' is not supported on Automation pHAT".format(self.name))
-
-        GPIO.output(self.pin, value)
+        
+        #Added for ARTIK eagleye-----------------------------------------
+        #----------------------------------------------------------------
+        #GPIO.output(self.pin, value)
 
         if self._en_auto_lights:
             if value:
@@ -356,8 +370,8 @@ def setup():
 
     _is_setup = True
 
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
+    #GPIO.setmode(GPIO.BCM)
+    #GPIO.setwarnings(False)
  
     try:
         import smbus
@@ -398,7 +412,7 @@ def _exit():
     if sn3218 is not None:
         sn3218.output([0] * 18)
 
-    GPIO.cleanup()
+    #GPIO.cleanup()
 
 analog = ObjectCollection()
 analog._add(one=AnalogInput(0, 25.85, 0))
