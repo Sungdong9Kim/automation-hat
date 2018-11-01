@@ -3,7 +3,7 @@ import time
 import warnings
 from sys import version_info
 
-''' 
+''' Eagleye 530s doesn't support RPi
 try:
     import RPi.GPIO as GPIO
 except ImportError:
