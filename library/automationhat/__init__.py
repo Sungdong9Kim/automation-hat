@@ -2,9 +2,9 @@ import atexit
 import time
 import warnings
 from sys import version_info
-#Added for eagleye--------
+#Added for ARTIK eagleye--------
 import sys
-#--------------------------
+#-------------------------------
 
 ''' Eagleye 530s doesn't support RPi
 try:
@@ -43,6 +43,17 @@ _led_states = [0] * 18
 _lights_need_updating = False
 _is_setup = False
 _t_update_lights = None
+
+#Added for ARTIK eagleye-----------------------------------------
+#export GPIO pin by opening file and writing the pin number to it
+pinctl = open("/sys/class/gpio/export", "wb", 0)
+try:
+    pinctl.write( str(ledpin))
+    print "Exported pin", str(ledpin)
+except:
+    print "Pin ", str(ledpin), " has been exported"
+pinctl.close()
+#----------------------------------------------------------------
 
 
 class SNLight(object):
