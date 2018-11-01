@@ -3,10 +3,12 @@ import time
 import warnings
 from sys import version_info
 
+''' 
 try:
     import RPi.GPIO as GPIO
 except ImportError:
     raise ImportError("This library requires the RPi.GPIO module\nInstall with: sudo pip install RPi.GPIO")
+'''
 
 from .ads1015 import ads1015
 from .pins import ObjectCollection, AsyncWorker, StoppableThread
