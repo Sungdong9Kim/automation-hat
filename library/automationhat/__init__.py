@@ -44,17 +44,6 @@ _lights_need_updating = False
 _is_setup = False
 _t_update_lights = None
 
-#Added for ARTIK eagleye-----------------------------------------
-#export GPIO pin by opening file and writing the pin number to it
-pinctl = open("/sys/class/gpio/export", "wb", 0)
-try:
-    pinctl.write( str(ledpin))
-    print "Exported pin", str(ledpin)
-except:
-    print "Pin ", str(ledpin), " has been exported"
-pinctl.close()
-#----------------------------------------------------------------
-
 
 class SNLight(object):
     def __init__(self, index):
@@ -158,6 +147,14 @@ class Pin(object):
     def read(self):
         self.setup()
         #Added for ARTIK eagleye-----------------------------------------
+        #export GPIO pin by opening file and writing the pin number to it
+        pinctl = open("/sys/class/gpio/export", "wb", 0)
+        try:
+            pinctl.write( str(self.pin))
+            print "Exported pin", str(self.pin)
+        except:
+            print "Pin ", str(self.pin), " has been exported"
+        pinctl.close()
         #----------------------------------------------------------------
         #return GPIO.input(self.pin)
 
@@ -230,6 +227,14 @@ class Output(Pin):
 
         setup()
         #Added for ARTIK eagleye-----------------------------------------
+        #export GPIO pin by opening file and writing the pin number to it
+        pinctl = open("/sys/class/gpio/export", "wb", 0)
+        try:
+            pinctl.write( str(self.pin))
+            print "Exported pin", str(self.pin)
+        except:
+            print "Pin ", str(self.pin), " has been exported"
+        pinctl.close()
         #----------------------------------------------------------------
         #GPIO.setup(self.pin, GPIO.OUT, initial=0)
         self._is_setup = True
@@ -247,6 +252,9 @@ class Output(Pin):
         """
         self.setup()
         #Added for ARTIK eagleye-----------------------------------------
+        pinctl.write( str(self.pin))
+        filename = '/sys/class/gpio/gpio%d/direction' % self.pin
+        pinctldir = open(filename, "wb", 0)
         #----------------------------------------------------------------
         #GPIO.output(self.pin, value)
         if self._en_auto_lights:
