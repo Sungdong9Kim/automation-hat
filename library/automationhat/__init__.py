@@ -2,6 +2,9 @@ import atexit
 import time
 import warnings
 from sys import version_info
+#Added for eagleye--------
+import sys
+#--------------------------
 
 ''' Eagleye 530s doesn't support RPi
 try:
