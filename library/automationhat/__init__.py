@@ -147,14 +147,16 @@ class Pin(object):
     def read(self):
         self.setup()
         #Added for ARTIK eagleye-----------------------------------------
-        #export GPIO pin by opening file and writing the pin number to it
-        pinctl = open("/sys/class/gpio/export", "wb", 0)
-        try:
-            pinctl.write( str(self.pin))
-            print "Exported pin", str(self.pin)
-        except:
-            print "Pin ", str(self.pin), " has been exported"
-        pinctl.close()
+        #pin value changes when the button is pressed
+        filename = '/sys/class/gpio/gpio%d/value' % self.pin
+        while True:
+            try:
+                pin = open(filename, "rb", 0)
+                return pin.read()
+                pin.close()
+            except KeyboardInterrupt:
+                exit_gpio()
+                sys.exit(0)
         #----------------------------------------------------------------
         #return GPIO.input(self.pin)
 
